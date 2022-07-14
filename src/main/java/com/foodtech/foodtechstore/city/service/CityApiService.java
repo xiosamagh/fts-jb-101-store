@@ -10,21 +10,22 @@ import com.foodtech.foodtechstore.base.api.response.SearchResponse;
 import com.foodtech.foodtechstore.base.service.CheckAccess;
 import com.foodtech.foodtechstore.city.api.request.CityRequest;
 import com.foodtech.foodtechstore.city.mapping.CityMapping;
-import com.foodtech.foodtechstore.city.api.response.CityResponse;
 import com.foodtech.foodtechstore.city.exeception.CityExistException;
 import com.foodtech.foodtechstore.city.exeception.CityNotExistException;
 import com.foodtech.foodtechstore.city.model.CityDoc;
 import com.foodtech.foodtechstore.city.repository.CityRepository;
+import com.foodtech.foodtechstore.street.api.request.StreetSearchRequest;
+import com.foodtech.foodtechstore.street.model.StreetDoc;
+import com.foodtech.foodtechstore.street.repository.StreetRepository;
+import com.foodtech.foodtechstore.street.service.StreetApiService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -35,9 +36,14 @@ public class CityApiService extends CheckAccess<CityDoc> {
     private final CityRepository cityRepository;
     private final MongoTemplate mongoTemplate;
     private final AuthService authService;
+    private final StreetApiService streetApiService;
     private final AdminRepository adminRepository;
+    private final StreetRepository streetRepository;
 
     public CityDoc create(CityRequest request) throws CityExistException, AuthException {
+
+
+
 
         AdminDoc adminDoc = authService.currentAdmin();
 
@@ -79,6 +85,8 @@ public class CityApiService extends CheckAccess<CityDoc> {
         CityDoc oldDoc = cityDocOptional.get();
         AdminDoc admin = checkAccess(oldDoc);
 
+
+
         CityDoc cityDoc = CityMapping.getInstance().getRequest().convert(request,admin.getId());
         cityDoc.setId(request.getId());
         cityDoc.setAdminId(oldDoc.getAdminId());
@@ -90,7 +98,15 @@ public class CityApiService extends CheckAccess<CityDoc> {
 
     public void delete(ObjectId id) throws ChangeSetPersister.NotFoundException, NotAccessException, AuthException {
         checkAccess(cityRepository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new));
+
+        List<StreetDoc> streetDocs = streetApiService.search(StreetSearchRequest.builder().cityId(id).size(1000).skip(0l).build()).getList();
+
+        for (StreetDoc streetDoc : streetDocs) {
+            streetApiService.delete(streetDoc.getId());
+        }
         cityRepository.deleteById(id);
+
+
     }
 
     @Override

@@ -41,6 +41,7 @@ public class CityMapping{
                 .priceDelivery(cityDoc.getPriceDelivery())
                 .timeDelivery(cityDoc.getTimeDelivery())
                 .title(cityDoc.getTitle())
+                    .streets(cityDoc.getStreets())
                 .build();
             }
 
