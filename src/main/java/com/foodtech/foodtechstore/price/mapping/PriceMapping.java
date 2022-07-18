@@ -11,7 +11,6 @@ import com.foodtech.foodtechstore.price.model.PriceDoc;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -32,6 +31,8 @@ public class PriceMapping{
 
     }
 
+
+
     public static class ResponseMapping extends BaseMapping<PriceDoc,PriceResponse>{
         @Override
         public PriceResponse convert(PriceDoc priceDoc){
@@ -40,6 +41,7 @@ public class PriceMapping{
                 .cityId(priceDoc.getCityId().toString())
                     .title(priceDoc.getTitle())
                 .priceList(priceDoc.getPriceList())
+                    .cityTitle(priceDoc.getCityTitle())
                 .build();
             }
 
@@ -72,6 +74,7 @@ public class PriceMapping{
         private final RequestMapping request=new RequestMapping();
         private final ResponseMapping response=new ResponseMapping();
         private final SearchMapping search=new SearchMapping();
+
 
         public static PriceMapping getInstance(){
             return new PriceMapping();

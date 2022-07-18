@@ -47,7 +47,6 @@ public class CityApiService extends CheckAccess<CityDoc> {
 
         AdminDoc adminDoc = authService.currentAdmin();
 
-
         CityDoc cityDoc =CityMapping.getInstance().getRequest().convert(request,adminDoc.getId());
         cityRepository.save(cityDoc);
         return  cityDoc;
@@ -104,6 +103,7 @@ public class CityApiService extends CheckAccess<CityDoc> {
         for (StreetDoc streetDoc : streetDocs) {
             streetApiService.delete(streetDoc.getId());
         }
+
         cityRepository.deleteById(id);
 
 

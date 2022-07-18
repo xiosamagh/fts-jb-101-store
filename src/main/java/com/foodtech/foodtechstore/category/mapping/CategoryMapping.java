@@ -37,6 +37,7 @@ public class CategoryMapping{
             return CategoryResponse.builder()
                 .id(categoryDoc.getId().toString())
                 .title(categoryDoc.getTitle())
+                    .products(categoryDoc.getProducts())
                 .build();
             }
 

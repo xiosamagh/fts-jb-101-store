@@ -20,8 +20,6 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @Api(value = "Price api")
@@ -62,6 +60,8 @@ public class PriceApiController {
         ));
     }
 
+
+
     @PutMapping(PriceApiRoutes.BY_ID)
     @ApiOperation(value = "update Price",notes = "use this if you need update Price")
     @ApiResponses(value={
@@ -84,6 +84,8 @@ public class PriceApiController {
     })
     public OkResponse<String> deleteById(@ApiParam(value = "Price id") @PathVariable ObjectId id) throws NotAccessException, ChangeSetPersister.NotFoundException, AuthException {
         priceApiService.delete(id);
+
         return OkResponse.of(HttpStatus.OK.toString());
+
     }
 }

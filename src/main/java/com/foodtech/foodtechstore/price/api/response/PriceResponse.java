@@ -19,5 +19,6 @@ public class PriceResponse {
             protected String id;
             protected String cityId;
             protected String title;
+            protected String cityTitle;
             protected Map<ObjectId,String> priceList;
 }

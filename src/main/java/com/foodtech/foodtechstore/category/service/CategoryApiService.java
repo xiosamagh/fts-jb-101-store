@@ -16,6 +16,12 @@ import com.foodtech.foodtechstore.category.exeception.CategoryNotExistException;
 import com.foodtech.foodtechstore.category.model.CategoryDoc;
 import com.foodtech.foodtechstore.category.repository.CategoryRepository;
 import com.foodtech.foodtechstore.city.mapping.CityMapping;
+import com.foodtech.foodtechstore.product.api.request.ProductRequest;
+import com.foodtech.foodtechstore.product.api.request.ProductSearchRequest;
+import com.foodtech.foodtechstore.product.model.ProductDoc;
+import com.foodtech.foodtechstore.product.service.ProductApiService;
+import com.foodtech.foodtechstore.street.api.request.StreetSearchRequest;
+import com.foodtech.foodtechstore.street.model.StreetDoc;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -37,6 +43,7 @@ public class CategoryApiService extends CheckAccess<CategoryDoc> {
     private final MongoTemplate mongoTemplate;
     private final AuthService authService;
     private final AdminRepository adminRepository;
+    private final ProductApiService productApiService;
 
 
     public CategoryDoc create(CategoryRequest request) throws AuthException {
@@ -93,6 +100,12 @@ public class CategoryApiService extends CheckAccess<CategoryDoc> {
 
     public void delete(ObjectId id) throws ChangeSetPersister.NotFoundException, NotAccessException, AuthException {
         checkAccess(categoryRepository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new));
+
+        List<ProductDoc> productDocs = productApiService.search(ProductSearchRequest.builder().categoryId(id).size(1000).skip(0l).build()).getList();
+
+        for (ProductDoc productDoc : productDocs) {
+            productApiService.delete(productDoc.getId());
+        }
         categoryRepository.deleteById(id);
     }
 

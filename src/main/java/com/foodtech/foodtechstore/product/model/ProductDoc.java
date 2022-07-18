@@ -1,12 +1,9 @@
-package com.foodtech.foodtechstore.price.model;
+package com.foodtech.foodtechstore.product.model;
 
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Document
 @Setter
@@ -15,12 +12,17 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PriceDoc {
+public class ProductDoc {
     @Id
      private ObjectId id;
      private ObjectId adminId;
-     private ObjectId cityId;
-     private String cityTitle;
+     private ObjectId categoryId;
+     private String category;
+     private ObjectId priceId;
+     private String imageURL;
+     private String price;
      private String title;
-     private Map<ObjectId,String> priceList = new HashMap<>();
+     private String description;
+     private Bju bju;
+     private String calories;
 }
