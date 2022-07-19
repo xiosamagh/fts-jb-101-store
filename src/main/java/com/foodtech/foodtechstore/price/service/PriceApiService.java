@@ -125,7 +125,8 @@ public class PriceApiService extends CheckAccess<PriceDoc> {
         priceDoc.setAdminId(oldDoc.getAdminId());
 
 
-        List<ProductDoc> productDocs = productRepository.findAllByPriceId(request.getId());
+//        List<ProductDoc> productDocs = productRepository.findAllByPriceId(request.getId());
+        List<ProductDoc> productDocs = productRepository.findAll();
 
         if (priceDoc.getPriceList() == null) {
             priceDoc.setPriceList(new HashMap<ObjectId, String>());

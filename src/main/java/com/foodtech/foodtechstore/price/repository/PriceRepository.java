@@ -13,5 +13,7 @@ public interface PriceRepository extends MongoRepository<PriceDoc, ObjectId> {
 
     List<PriceDoc> findAllByCityId(ObjectId id);
 
+    PriceDoc findPriceDocByCityId(ObjectId id);
+
 
 }
