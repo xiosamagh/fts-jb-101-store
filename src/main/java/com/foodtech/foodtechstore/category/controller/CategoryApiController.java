@@ -49,7 +49,7 @@ public class CategoryApiController {
     ));
     }
     @GetMapping(CategoryApiRoutes.ROOT)
-    @ApiOperation(value = "search Category",notes = "use this if you need find Category by ????")
+    @ApiOperation(value = "search Category",notes = "use this if you need find Category by title")
     @ApiResponses(value={
             @ApiResponse(code = 200,message = "Success")
     })

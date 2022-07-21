@@ -21,6 +21,7 @@ public class SessionMapping {
 
                     .id(sessionRequest.getId())
                     .cityId(sessionRequest.getCityId())
+                    .basketId(sessionRequest.getBasketId())
                     .build();
         }
 
@@ -35,6 +36,7 @@ public class SessionMapping {
             return SessionResponse.builder()
         .id(sessionDoc.getId().toString())
         .cityId(sessionDoc.getCityId().toString())
+                    .basketId(sessionDoc.getBasketId().toString())
                     .build();
         }
 

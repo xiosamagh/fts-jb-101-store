@@ -49,7 +49,7 @@ public class CityApiController {
     ));
     }
     @GetMapping(CityApiRoutes.ROOT)
-    @ApiOperation(value = "search City",notes = "use this if you need find City by ????")
+    @ApiOperation(value = "search City",notes = "use this if you need find City by title")
     @ApiResponses(value={
             @ApiResponse(code = 200,message = "Success")
     })

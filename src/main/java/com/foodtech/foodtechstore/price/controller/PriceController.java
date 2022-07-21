@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PriceController {
 
     private final PriceApiService priceApiService;
+
     @PutMapping(PriceApiRoutes.ADD)
     @ApiOperation(value = "add price",notes="use this when you need add list product to Price")
     @ApiResponses(value = {

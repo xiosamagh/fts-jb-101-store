@@ -1,10 +1,13 @@
-package com.foodtech.foodtechstore.session.model;
+package com.foodtech.foodtechstore.basket.model;
 
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.boot.autoconfigure.batch.BatchDataSource;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Document
 @Getter
@@ -13,12 +16,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class SessionDoc {
+public class BasketDoc {
 
     @Id
             private ObjectId id;
-            private ObjectId cityId;
-            private ObjectId basketId;
+            private ObjectId sessionId;
+            private Map<ObjectId,Integer> products = new HashMap<>();
+            private Integer amountOrder;
+            private String amountDelivery;
+            private Integer amountTotal;
 
 
 

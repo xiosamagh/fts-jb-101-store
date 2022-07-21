@@ -11,16 +11,10 @@ import com.foodtech.foodtechstore.base.service.CheckAccess;
 import com.foodtech.foodtechstore.category.exeception.CategoryNotExistException;
 import com.foodtech.foodtechstore.category.model.CategoryDoc;
 import com.foodtech.foodtechstore.category.repository.CategoryRepository;
-import com.foodtech.foodtechstore.city.exeception.CityNotExistException;
-import com.foodtech.foodtechstore.price.api.request.PriceRequest;
-import com.foodtech.foodtechstore.price.mapping.PriceMapping;
-import com.foodtech.foodtechstore.price.model.PriceDoc;
 import com.foodtech.foodtechstore.price.repository.PriceRepository;
 import com.foodtech.foodtechstore.price.service.PriceApiService;
-import com.foodtech.foodtechstore.product.api.request.ProductAddPriceRequest;
 import com.foodtech.foodtechstore.product.api.request.ProductRequest;
 import com.foodtech.foodtechstore.product.mapping.ProductMapping;
-import com.foodtech.foodtechstore.product.api.response.ProductResponse;
 import com.foodtech.foodtechstore.product.exeception.ProductExistException;
 import com.foodtech.foodtechstore.product.exeception.ProductNotExistException;
 import com.foodtech.foodtechstore.product.model.ProductDoc;
@@ -32,14 +26,9 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -133,33 +122,6 @@ public class ProductApiService extends CheckAccess<ProductDoc> {
         productRepository.deleteById(id);
     }
 
-    public ProductDoc addPriceList(ProductAddPriceRequest request) throws ProductNotExistException, NotAccessException, AuthException, ChangeSetPersister.NotFoundException {
-        Optional<ProductDoc> productDocOptional = productRepository.findById(request.getProductId());
-        if (productDocOptional == null) {
-            throw new ProductNotExistException();
-        }
-
-        ProductDoc oldDoc = productDocOptional.get();
-        AdminDoc admin = checkAccess(oldDoc);
-
-//        ProductDoc productDoc = ProductMapping.getInstance().getProductPriceRequest().convert(request,admin.getId());
-
-        PriceDoc priceDoc = priceRepository.findById(request.getPriceId()).get();
-//        if (!productDoc.getCityId().equals(priceDoc.getCityId())) {
-//            throw new ChangeSetPersister.NotFoundException();
-//        }
-
-
-        priceDoc.getPriceList().put(request.getProductId(),request.getPrice());
-        priceRepository.save(priceDoc);
-
-        return oldDoc;
-
-
-
-
-
-    }
 
     @Override
     protected ObjectId getOwnerFromEntity(ProductDoc entity) {

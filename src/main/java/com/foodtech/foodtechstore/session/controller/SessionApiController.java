@@ -3,6 +3,7 @@ package com.foodtech.foodtechstore.session.controller;
 import com.foodtech.foodtechstore.base.api.request.SearchRequest;
 import com.foodtech.foodtechstore.base.api.response.OkResponse;
 import com.foodtech.foodtechstore.base.api.response.SearchResponse;
+import com.foodtech.foodtechstore.basket.exception.BasketExistException;
 import com.foodtech.foodtechstore.city.exeception.CityNotExistException;
 import com.foodtech.foodtechstore.price.exeception.PriceNotExistException;
 import com.foodtech.foodtechstore.session.api.request.SessionRequest;
@@ -34,7 +35,7 @@ public class SessionApiController {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 400, message = "Session already exist")
     })
-    public OkResponse<SessionResponse> create(@RequestBody SessionRequest request) throws SessionExistException, CityNotExistException, PriceNotExistException {
+    public OkResponse<SessionResponse> create(@RequestBody SessionRequest request) throws SessionExistException, CityNotExistException, PriceNotExistException, BasketExistException {
 
         return OkResponse.of(SessionMapping.getInstance().getResponseMapping().convert(sessionApiService.create(request)));
     }
@@ -49,7 +50,7 @@ public class SessionApiController {
     }
 
     @GetMapping(SessionApiRoutes.ROOT)
-    @ApiOperation(value = "Search session", notes = "Use this when you need find session by ?????")
+    @ApiOperation(value = "Search session", notes = "Use this when you need find list session")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "Session not found")

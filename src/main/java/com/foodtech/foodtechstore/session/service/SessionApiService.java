@@ -3,7 +3,14 @@ package com.foodtech.foodtechstore.session.service;
 
 import com.foodtech.foodtechstore.base.api.request.SearchRequest;
 import com.foodtech.foodtechstore.base.api.response.SearchResponse;
+import com.foodtech.foodtechstore.basket.api.request.BasketRequest;
+import com.foodtech.foodtechstore.basket.exception.BasketExistException;
+import com.foodtech.foodtechstore.basket.mapping.BasketMapping;
+import com.foodtech.foodtechstore.basket.model.BasketDoc;
+import com.foodtech.foodtechstore.basket.repository.BasketRepository;
+import com.foodtech.foodtechstore.basket.service.BasketApiService;
 import com.foodtech.foodtechstore.city.exeception.CityNotExistException;
+import com.foodtech.foodtechstore.city.model.CityDoc;
 import com.foodtech.foodtechstore.city.repository.CityRepository;
 import com.foodtech.foodtechstore.price.exeception.PriceNotExistException;
 import com.foodtech.foodtechstore.price.model.PriceDoc;
@@ -36,8 +43,10 @@ public class SessionApiService {
     private final CityRepository cityRepository;
     private final PriceRepository priceRepository;
     private final ProductRepository productRepository;
+    private final BasketApiService basketApiService;
+    private final BasketRepository basketRepository;
 
-    public SessionDoc create(SessionRequest request) throws SessionExistException, CityNotExistException, PriceNotExistException {
+    public SessionDoc create(SessionRequest request) throws SessionExistException, CityNotExistException, PriceNotExistException, BasketExistException {
 
         if (cityRepository.findById(request.getCityId()).isPresent()==false) {
             throw new CityNotExistException();
@@ -58,6 +67,20 @@ public class SessionApiService {
         }
 
         SessionDoc sessionDoc = SessionMapping.getInstance().getRequestMapping().convert(request);
+        sessionRepository.save(sessionDoc);
+
+
+
+        CityDoc cityDoc = cityRepository.findById(sessionDoc.getCityId()).get();
+        BasketDoc basketDoc = basketApiService.create(
+                BasketRequest.builder()
+                        .sessionId(sessionDoc.getId())
+                        .amountDelivery(cityDoc.getPriceDelivery())
+                        .build()
+        );
+
+        sessionDoc.setBasketId(basketRepository.findBySessionId(sessionDoc.getId()).getId());
+
 
         sessionRepository.save(sessionDoc);
 
@@ -121,6 +144,7 @@ public class SessionApiService {
     }
 
     public void delete(ObjectId id) {
+        basketApiService.delete(basketRepository.findBySessionId(id).getId());
         sessionRepository.deleteById(id);
     }
 }

@@ -16,5 +16,6 @@ public class SessionResponse {
 
             protected String id;
             protected String cityId;
+            protected String basketId;
 
 }

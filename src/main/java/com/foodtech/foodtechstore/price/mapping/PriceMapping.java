@@ -1,7 +1,4 @@
-package
-
-        com.foodtech.foodtechstore.price.mapping;
-
+package com.foodtech.foodtechstore.price.mapping;
 
 import com.foodtech.foodtechstore.base.api.response.SearchResponse;
 import com.foodtech.foodtechstore.base.mapping.BaseMapping;
@@ -10,7 +7,6 @@ import com.foodtech.foodtechstore.price.api.response.PriceResponse;
 import com.foodtech.foodtechstore.price.model.PriceDoc;
 import lombok.Getter;
 import org.bson.types.ObjectId;
-
 import java.util.stream.Collectors;
 
 @Getter

@@ -14,5 +14,6 @@ public class SessionRequest {
 
             private ObjectId id;
             private ObjectId cityId;
+            private ObjectId basketId;
 
 }

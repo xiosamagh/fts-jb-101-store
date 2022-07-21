@@ -48,7 +48,7 @@ public class PriceApiController {
     ));
     }
     @GetMapping(PriceApiRoutes.ROOT)
-    @ApiOperation(value = "search Price",notes = "use this if you need find Price by ????")
+    @ApiOperation(value = "search Price",notes = "use this if you need find Price by title or city title")
     @ApiResponses(value={
             @ApiResponse(code = 200,message = "Success")
     })

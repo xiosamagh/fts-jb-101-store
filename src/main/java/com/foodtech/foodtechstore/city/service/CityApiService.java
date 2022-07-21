@@ -1,7 +1,6 @@
 package com.foodtech.foodtechstore.city.service;
 
 import com.foodtech.foodtechstore.admin.model.AdminDoc;
-import com.foodtech.foodtechstore.admin.repository.AdminRepository;
 import com.foodtech.foodtechstore.auth.exceptions.AuthException;
 import com.foodtech.foodtechstore.auth.exceptions.NotAccessException;
 import com.foodtech.foodtechstore.auth.service.AuthService;
@@ -16,7 +15,6 @@ import com.foodtech.foodtechstore.city.model.CityDoc;
 import com.foodtech.foodtechstore.city.repository.CityRepository;
 import com.foodtech.foodtechstore.street.api.request.StreetSearchRequest;
 import com.foodtech.foodtechstore.street.model.StreetDoc;
-import com.foodtech.foodtechstore.street.repository.StreetRepository;
 import com.foodtech.foodtechstore.street.service.StreetApiService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -37,8 +35,7 @@ public class CityApiService extends CheckAccess<CityDoc> {
     private final MongoTemplate mongoTemplate;
     private final AuthService authService;
     private final StreetApiService streetApiService;
-    private final AdminRepository adminRepository;
-    private final StreetRepository streetRepository;
+
 
     public CityDoc create(CityRequest request) throws CityExistException, AuthException {
 

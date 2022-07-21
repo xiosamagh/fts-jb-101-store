@@ -116,9 +116,7 @@ public class PriceApiService extends CheckAccess<PriceDoc> {
         PriceDoc oldDoc = priceDocOptional.get();
 
         AdminDoc adminDoc = checkAccess(oldDoc);
-//
-//
-//
+
         PriceDoc priceDoc = PriceMapping.getInstance().getRequest().convert(request,adminDoc.getId());
         priceDoc.setCityId(oldDoc.getCityId());
         priceDoc.setTitle(oldDoc.getTitle());

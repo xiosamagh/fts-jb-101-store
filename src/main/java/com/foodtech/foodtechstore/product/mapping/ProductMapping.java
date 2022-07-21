@@ -5,14 +5,12 @@ package
 
 import com.foodtech.foodtechstore.base.api.response.SearchResponse;
 import com.foodtech.foodtechstore.base.mapping.BaseMapping;
-import com.foodtech.foodtechstore.product.api.request.ProductAddPriceRequest;
 import com.foodtech.foodtechstore.product.api.request.ProductRequest;
 import com.foodtech.foodtechstore.product.api.response.ProductResponse;
 import com.foodtech.foodtechstore.product.model.ProductDoc;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -39,22 +37,6 @@ public class ProductMapping{
 
     }
 
-    public static class ProductPriceRequest {
-
-
-        public ProductDoc convert(ProductAddPriceRequest productRequest, ObjectId adminId){
-            return ProductDoc.builder()
-                    .id(productRequest.getId())
-                    .adminId(adminId)
-                    .price(productRequest.getPrice())
-                    .priceId(productRequest.getPriceId())
-
-
-                    .build();
-        }
-
-
-    }
 
     public static class ResponseMapping extends BaseMapping<ProductDoc,ProductResponse>{
         @Override
@@ -100,7 +82,6 @@ public class ProductMapping{
         private final RequestMapping request=new RequestMapping();
         private final ResponseMapping response=new ResponseMapping();
         private final SearchMapping search=new SearchMapping();
-        private final ProductPriceRequest productPriceRequest = new ProductPriceRequest();
 
         public static ProductMapping getInstance(){
             return new ProductMapping();

@@ -51,7 +51,7 @@ public class StreetApiController {
     ));
     }
     @GetMapping(StreetApiRoutes.ROOT)
-    @ApiOperation(value = "search Street",notes = "use this if you need find Street by ????")
+    @ApiOperation(value = "search Street",notes = "use this if you need find Street by cityTitle or title")
     @ApiResponses(value={
             @ApiResponse(code = 200,message = "Success")
     })
