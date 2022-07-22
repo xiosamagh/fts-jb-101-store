@@ -46,6 +46,7 @@ public class SessionApiService {
     private final BasketApiService basketApiService;
     private final BasketRepository basketRepository;
 
+
     public SessionDoc create(SessionRequest request) throws SessionExistException, CityNotExistException, PriceNotExistException, BasketExistException {
 
         if (cityRepository.findById(request.getCityId()).isPresent()==false) {

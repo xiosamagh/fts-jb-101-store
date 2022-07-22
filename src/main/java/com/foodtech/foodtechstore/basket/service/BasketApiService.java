@@ -10,6 +10,8 @@ import com.foodtech.foodtechstore.basket.exception.BasketExistException;
 import com.foodtech.foodtechstore.basket.exception.BasketNotExistException;
 import com.foodtech.foodtechstore.basket.model.BasketDoc;
 import com.foodtech.foodtechstore.basket.repository.BasketRepository;
+import com.foodtech.foodtechstore.guest.repository.GuestRepository;
+import com.foodtech.foodtechstore.guest.service.GuestApiService;
 import com.foodtech.foodtechstore.product.model.ProductDoc;
 import com.foodtech.foodtechstore.product.repository.ProductRepository;
 import com.foodtech.foodtechstore.session.repository.SessionRepository;
@@ -33,6 +35,8 @@ public class BasketApiService {
     private  final MongoTemplate mongoTemplate;
     private final SessionRepository sessionRepository;
     private final ProductRepository productRepository;
+    private final GuestRepository guestRepository;
+    private final GuestApiService guestApiService;
 
     public BasketDoc create(BasketRequest request) throws BasketExistException {
 
@@ -182,6 +186,7 @@ public class BasketApiService {
     }
 
     public void delete(ObjectId id) {
+        guestApiService.delete(guestRepository.findByBasketId(id).getId());
         basketRepository.deleteById(id);
     }
 }
