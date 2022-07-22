@@ -21,6 +21,7 @@ public class PriceMapping{
                 .adminId(adminId)
                 .cityId(priceRequest.getCityId())
                 .priceList(priceRequest.getPriceList())
+
                     .title(priceRequest.getTitle())
             .build();
             }

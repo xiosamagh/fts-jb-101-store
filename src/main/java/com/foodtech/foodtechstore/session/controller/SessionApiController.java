@@ -4,6 +4,7 @@ import com.foodtech.foodtechstore.base.api.request.SearchRequest;
 import com.foodtech.foodtechstore.base.api.response.OkResponse;
 import com.foodtech.foodtechstore.base.api.response.SearchResponse;
 import com.foodtech.foodtechstore.basket.exception.BasketExistException;
+import com.foodtech.foodtechstore.basket.exception.BasketNotExistException;
 import com.foodtech.foodtechstore.city.exeception.CityNotExistException;
 import com.foodtech.foodtechstore.price.exeception.PriceNotExistException;
 import com.foodtech.foodtechstore.session.api.request.SessionRequest;
@@ -73,7 +74,7 @@ public class SessionApiController {
     public OkResponse<SessionResponse> updateById(
             @ApiParam(value = "Session id") @PathVariable String id,
             @RequestBody SessionRequest sessionRequest
-            ) throws SessionNotExistException, PriceNotExistException {
+            ) throws SessionNotExistException, PriceNotExistException, BasketNotExistException {
         return OkResponse.of(SessionMapping.getInstance().getResponseMapping().convert(
                 sessionApiService.update(sessionRequest)
         ));

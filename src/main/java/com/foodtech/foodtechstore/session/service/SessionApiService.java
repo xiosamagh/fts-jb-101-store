@@ -5,7 +5,7 @@ import com.foodtech.foodtechstore.base.api.request.SearchRequest;
 import com.foodtech.foodtechstore.base.api.response.SearchResponse;
 import com.foodtech.foodtechstore.basket.api.request.BasketRequest;
 import com.foodtech.foodtechstore.basket.exception.BasketExistException;
-import com.foodtech.foodtechstore.basket.mapping.BasketMapping;
+import com.foodtech.foodtechstore.basket.exception.BasketNotExistException;
 import com.foodtech.foodtechstore.basket.model.BasketDoc;
 import com.foodtech.foodtechstore.basket.repository.BasketRepository;
 import com.foodtech.foodtechstore.basket.service.BasketApiService;
@@ -30,8 +30,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,7 +113,7 @@ public class SessionApiService {
     }
 
 
-    public SessionDoc update(SessionRequest request) throws SessionNotExistException, PriceNotExistException {
+    public SessionDoc update(SessionRequest request) throws SessionNotExistException, PriceNotExistException, BasketNotExistException {
         Optional<SessionDoc> sessionDocOptional = sessionRepository.findById(request.getId());
         if (sessionDocOptional == null) {
             throw new SessionNotExistException();
@@ -137,6 +135,15 @@ public class SessionApiService {
 
         SessionDoc sessionDoc = SessionMapping.getInstance().getRequestMapping().convert(request);
         sessionDoc.setId(request.getId());
+        CityDoc cityDoc = cityRepository.findById(sessionDoc.getCityId()).get();
+
+        basketApiService.update(
+                BasketRequest.builder()
+                        .id(request.getBasketId())
+                        .amountDelivery(cityDoc.getPriceDelivery())
+                        .sessionId(request.getId())
+                        .build()
+        );
 
 
         sessionRepository.save(sessionDoc);

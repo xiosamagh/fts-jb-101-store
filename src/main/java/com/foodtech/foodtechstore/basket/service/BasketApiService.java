@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -82,8 +83,39 @@ public class BasketApiService {
 
 
         BasketDoc basketDoc = BasketMapping.getInstance().getRequestMapping().convert(request);
+        basketDoc.setProducts(oldDoc.getProducts());
         basketDoc.setId(request.getId());
         basketDoc.setSessionId(oldDoc.getSessionId());
+
+        if (!basketDoc.getProducts().isEmpty()) {
+            basketDoc.setAmountOrder(0);
+            Map<ObjectId, Integer> products = oldDoc.getProducts();
+            for (Map.Entry<ObjectId,Integer> entry : products.entrySet()) {
+                ProductDoc productDoc = productRepository.findById(entry.getKey()).get();
+                String[] price = productDoc.getPrice().split(" ");
+                Integer amount = Integer.parseInt(price[0]) * entry.getValue();
+                if (basketDoc.getAmountOrder() == 0) {
+                    basketDoc.setAmountOrder(amount);
+                }
+                else  {
+                    basketDoc.setAmountOrder(basketDoc.getAmountOrder() + amount);
+                }
+
+
+
+            }
+            String amountDelivery = basketDoc.getAmountDelivery().toLowerCase();
+            if (amountDelivery.equals("бесплатно")) {
+                basketDoc.setAmountDelivery("0");
+            }
+            else {
+                String[] amountDelivers = amountDelivery.split(" ");
+                basketDoc.setAmountDelivery(amountDelivers[0]);
+            }
+            basketDoc.setAmountTotal(basketDoc.getAmountOrder()+ Integer.parseInt(basketDoc.getAmountDelivery()));
+            basketRepository.save(basketDoc);
+
+        }
 
         basketRepository.save(basketDoc);
 
